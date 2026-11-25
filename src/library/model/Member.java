@@ -40,13 +40,13 @@ public class Member {
         return activeLoans < borrowLimit; 
     }
 
-    //methods are private to ensure that only the Member class can modify its own active loans
-    private void incrementLoans(){ 
+    //methods are package-private to ensure that only the library system can modify the active loans count
+    void incrementLoans(){ 
         activeLoans++; 
     }
 
     // Decrement active loans, ensures it doesn't go below zero
-    private void decrementLoans(){ 
+    void decrementLoans(){ 
         if (activeLoans > 0) activeLoans--; 
     }
 
