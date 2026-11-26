@@ -1,62 +1,44 @@
 package library.model;
-import java.time.LocalDateTime;
 
-public class Reservation {
-    private String reservationId; 
-    private String reservationType;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+public abstract class Reservation {
+    private String reservationId;
     private Member member;
-    private Book book;
-    private Seat seat;
     private boolean active = true;
 
-    public Reservation(String id, Member member, Book book, LocalDateTime start, LocalDateTime end) {
-        reservationId = id; 
-        this.member = member; 
-        this.book = book;
-        reservationType = "Book"; 
-        startTime = start; 
-        endTime = end;
+    protected Reservation(String reservation, Member member) {
+        this.reservationId = reservation; 
+        this.member = member;
     }
 
-    public Reservation(String id, Member member, Seat seat, LocalDateTime start, LocalDateTime end) {
-        reservationId = id; 
-        this.member = member; 
-        this.seat = seat;
-        reservationType = "Seat"; 
-        startTime = start; 
-        endTime = end;
-    }
     public String getReservationId(){ 
         return reservationId; 
-    }
-    public String getReservationType(){ 
-        return reservationType; 
     }
     public Member getMember(){ 
         return member; 
     }
-    public Book getBook(){ 
-        return book; 
-    }
-    public Seat getSeat(){ 
-        return seat; 
-    }
-    public LocalDateTime getStartTime(){ 
-        return startTime; 
-    }
-    public LocalDateTime getEndTime(){ 
-        return endTime; 
-    }
     public boolean isActive(){ 
         return active; 
     }
+    
+    public abstract String getTypeLabel();
+
+    public abstract String getItemLabel();
+
+    protected abstract void release();
+
     public void cancel(){ 
         active = false; 
     }
+
+    @Override
     public String toString() {
-        String item = book != null ? book.getTitle() : seat.getSeatId();
-        return reservationId + " | " + member.getName() + " | " + item + " | " + (active ? "Active" : "Cancelled");
+        String status;
+        if (active) {
+            status = "Active";
+        } else {
+            status = "Inactive";
+        }
+        return reservationId + " | " + member.getName() + " | " + getTypeLabel() + ": " + getItemLabel()
+                + " | " + status;
     }
 }
